@@ -1,20 +1,71 @@
-import React from "react";
-import { Link } from "react-router-dom";
-import { FaUserCircle, FaSignOutAlt } from "react-icons/fa";
+import React, { useState } from "react";
+import { Link, useNavigate } from "react-router-dom";
+import {
+  FaBars,
+  FaTimes,
+  FaSignOutAlt,
+  FaTachometerAlt,
+  FaUsers,
+  FaExchangeAlt,
+  FaMoneyBillWave,
+  FaWallet,
+  FaArrowDown,
+} from "react-icons/fa";
+import logo from "../assets/logo.png";
+import { toast } from "react-toastify";
 
 const Navbar = () => {
+  const [menuOpen, setMenuOpen] = useState(false);
+  const navigate = useNavigate();
+
+  const handleLogout = () => {
+    localStorage.removeItem("token");
+    localStorage.removeItem("user");
+    toast.success("Logout Successful!");
+    navigate("/");
+  };
+
   return (
-    <div className="navbar">
-      <h2>Admin Panel</h2>
-      <div>
-        <Link to="/dashboard" style={{ marginRight: 15, color: "#38bdf8" }}>
-          <FaUserCircle /> Dashboard
-        </Link>
-        <Link to="/" style={{ color: "#38bdf8" }}>
-          <FaSignOutAlt /> Logout
-        </Link>
+    <nav className="navbar">
+      <div className="navbar-logo">
+        <img src={logo} alt="Logo" width="150px" />
       </div>
-    </div>
+
+      <div className={`navbar-links ${menuOpen ? "active" : ""}`}>
+        <Link to="/dashboard" onClick={() => setMenuOpen(false)}>
+          <FaTachometerAlt style={{ marginRight: 3 }} /> Dashboard
+        </Link>
+
+        <Link to="/users" onClick={() => setMenuOpen(false)}>
+          <FaUsers style={{ marginRight: 3 }} /> Users
+        </Link>
+
+        <Link to="/transactions" onClick={() => setMenuOpen(false)}>
+          <FaExchangeAlt style={{ marginRight: 3 }} /> Transactions
+        </Link>
+
+        <Link to="/deposits" onClick={() => setMenuOpen(false)}>
+          <FaMoneyBillWave style={{ marginRight: 3 }} /> Deposits
+        </Link>
+
+        <Link to="/investments" onClick={() => setMenuOpen(false)}>
+          <FaWallet style={{ marginRight: 3 }} /> Investments
+        </Link>
+
+        <Link to="/withdrawals" onClick={() => setMenuOpen(false)}>
+          <FaArrowDown style={{ marginRight: 3 }} /> Withdrawals
+        </Link>
+
+        <button onClick={handleLogout} className="logout-btn">
+          <FaSignOutAlt style={{ marginRight: 3 }} /> Logout
+        </button>
+      </div>
+
+      {/* Only one hamburger icon */}
+      <div className="navbar-hamburger" onClick={() => setMenuOpen(!menuOpen)}>
+        {menuOpen ? <FaTimes /> : <FaBars />}
+      </div>
+    </nav>
   );
 };
 

@@ -1,4 +1,5 @@
 import { useState, useEffect } from "react";
+import { useNavigate } from "react-router-dom";
 import Navbar from "../components/Navbar";
 import Footer from "../components/Footer";
 import {
@@ -8,7 +9,7 @@ import {
   FaWallet,
   FaArrowDown,
 } from "react-icons/fa";
-import "../App.css";
+import { Link } from "react-router-dom";
 
 const Dashboard = () => {
   // Dummy data for demo
@@ -19,7 +20,6 @@ const Dashboard = () => {
   const [withdrawals, setWithdrawals] = useState([]);
 
   useEffect(() => {
-    // Simulate fetching data
     setUsers([{ id: 1, name: "John Doe", email: "john@example.com" }]);
     setTransactions([
       { id: 1, type: "Deposit", amount: 100, user: "John Doe" },
@@ -40,164 +40,58 @@ const Dashboard = () => {
       <Navbar />
 
       <div className="container">
-        <h2>Dashboard</h2>
+        <h2 style={{ color: "#fff", marginBottom: 20 }}>Admin Dashboard</h2>
 
-        {/* Summary Cards */}
-        <div
-          style={{
-            display: "grid",
-            gridTemplateColumns: "repeat(auto-fit,minmax(250px,1fr))",
-            gap: 20,
-            marginTop: 20,
-          }}
-        >
-          <div className="card">
-            <h3>
-              <FaUsers /> Users
-            </h3>
-            <p>Total Users: {users.length}</p>
+        <div className="dashboard-grid">
+          {/* Users Card */}
+          <div className="dashboard-card">
+            <FaUsers className="card-icon" />
+            <h3>Users</h3>
+            <p>Total: {users.length}</p>
+            <Link className="view-btn" to="/users">
+              View Users
+            </Link>
           </div>
-          <div className="card">
-            <h3>
-              <FaExchangeAlt /> Transactions
-            </h3>
-            <p>Total Transactions: {transactions.length}</p>
+
+          {/* Transactions Card */}
+          <div className="dashboard-card">
+            <FaExchangeAlt className="card-icon" />
+            <h3>Transactions</h3>
+            <p>Total: {transactions.length}</p>
+            <Link className="view-btn" to="/transactions">
+              View Transactions
+            </Link>
           </div>
-          <div className="card">
-            <h3>
-              <FaMoneyBillWave /> Deposits
-            </h3>
-            <p>Total Deposits: {deposits.length}</p>
+
+          {/* Deposits Card */}
+          <div className="dashboard-card">
+            <FaMoneyBillWave className="card-icon" />
+            <h3>Deposits</h3>
+            <p>Total: {deposits.length}</p>
+            <Link className="view-btn" to="/deposits">
+              View Deposits
+            </Link>
           </div>
-          <div className="card">
-            <h3>
-              <FaWallet /> Investments
-            </h3>
-            <p>Total Investments: {investments.length}</p>
+
+          {/* Investments Card */}
+          <div className="dashboard-card">
+            <FaWallet className="card-icon" />
+            <h3>Investments</h3>
+            <p>Total: {investments.length}</p>
+            <Link className="view-btn" to="/investments">
+              View Investments
+            </Link>
           </div>
-          <div className="card">
-            <h3>
-              <FaArrowDown /> Withdrawals
-            </h3>
-            <p>Total Withdrawals: {withdrawals.length}</p>
+
+          {/* Withdrawals Card */}
+          <div className="dashboard-card">
+            <FaArrowDown className="card-icon" />
+            <h3>Withdrawals</h3>
+            <p>Total: {withdrawals.length}</p>
+            <Link className="view-btn" to="/withdrawals">
+              View Withdrawals
+            </Link>
           </div>
-        </div>
-
-        {/* Users Table */}
-        <div className="card">
-          <h3>All Users</h3>
-          <table className="table">
-            <thead>
-              <tr>
-                <th>ID</th>
-                <th>Name</th>
-                <th>Email</th>
-              </tr>
-            </thead>
-            <tbody>
-              {users.map((user) => (
-                <tr key={user.id}>
-                  <td>{user.id}</td>
-                  <td>{user.name}</td>
-                  <td>{user.email}</td>
-                </tr>
-              ))}
-            </tbody>
-          </table>
-        </div>
-
-        {/* Transactions Table */}
-        <div className="card">
-          <h3>All Transactions</h3>
-          <table className="table">
-            <thead>
-              <tr>
-                <th>ID</th>
-                <th>Type</th>
-                <th>Amount</th>
-                <th>User</th>
-              </tr>
-            </thead>
-            <tbody>
-              {transactions.map((tx) => (
-                <tr key={tx.id}>
-                  <td>{tx.id}</td>
-                  <td>{tx.type}</td>
-                  <td>${tx.amount}</td>
-                  <td>{tx.user}</td>
-                </tr>
-              ))}
-            </tbody>
-          </table>
-        </div>
-
-        {/* Deposits Table */}
-        <div className="card">
-          <h3>All Deposits</h3>
-          <table className="table">
-            <thead>
-              <tr>
-                <th>ID</th>
-                <th>User</th>
-                <th>Amount</th>
-              </tr>
-            </thead>
-            <tbody>
-              {deposits.map((d) => (
-                <tr key={d.id}>
-                  <td>{d.id}</td>
-                  <td>{d.user}</td>
-                  <td>${d.amount}</td>
-                </tr>
-              ))}
-            </tbody>
-          </table>
-        </div>
-
-        {/* Investments Table */}
-        <div className="card">
-          <h3>All Investments</h3>
-          <table className="table">
-            <thead>
-              <tr>
-                <th>ID</th>
-                <th>User</th>
-                <th>Amount</th>
-              </tr>
-            </thead>
-            <tbody>
-              {investments.map((inv) => (
-                <tr key={inv.id}>
-                  <td>{inv.id}</td>
-                  <td>{inv.user}</td>
-                  <td>${inv.amount}</td>
-                </tr>
-              ))}
-            </tbody>
-          </table>
-        </div>
-
-        {/* Withdrawals Table */}
-        <div className="card">
-          <h3>All Withdrawals</h3>
-          <table className="table">
-            <thead>
-              <tr>
-                <th>ID</th>
-                <th>User</th>
-                <th>Amount</th>
-              </tr>
-            </thead>
-            <tbody>
-              {withdrawals.map((w) => (
-                <tr key={w.id}>
-                  <td>{w.id}</td>
-                  <td>{w.user}</td>
-                  <td>${w.amount}</td>
-                </tr>
-              ))}
-            </tbody>
-          </table>
         </div>
       </div>
 

@@ -10,26 +10,51 @@ body {
   color: #ffffff;
 }
 
-/* Containers */
 .container {
-  padding: 20px;
+  width: 90%;
+  max-width: 1200px;
+  margin: auto;
+  padding-top: 30px;
 }
 
-/* Cards */
-.card {
-  background-color: #0f172a;
-  padding: 20px;
-  border-radius: 10px;
-  margin-bottom: 20px;
+.dashboard-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(230px, 1fr));
+  gap: 25px;
 }
 
-/* Headings */
-h1,
-h2,
-h3,
-h4 {
+.dashboard-card {
+  background: #0f172a;
+  padding: 30px;
+  border-radius: 12px;
+  cursor: pointer;
+  transition: 0.3s ease;
+  color: #fff;
+  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.4);
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+}
+
+.dashboard-card:hover {
+  transform: translateY(-5px);
+  background: #141f39;
+}
+
+.card-icon {
+  font-size: 28px;
+  margin-bottom: 15px;
   color: #38bdf8;
-  margin: 0 0 10px 0;
+}
+
+.view-btn {
+  background-color: #38bdf8;
+  border-radius: 3px;
+  padding: 5px;
+  width: 100%;
+  text-align: center;
+  text-decoration: none;
+  color: #1a1a1a;
 }
 
 /* Buttons */
@@ -58,7 +83,6 @@ form {
   background-color: #0f172a;
   padding: 20px;
   border-radius: 10px;
-  margin-bottom: 20px;
   width: 400px;
   margin: auto;
   text-align: center;
@@ -77,14 +101,100 @@ button {
   margin-bottom: 10px;
 }
 
-/* Navbar */
+/* Navbar container */
+/* ===== NAVBAR BASE ===== */
 .navbar {
-  background-color: #1e293b;
-  color: #38bdf8;
-  padding: 10px 20px;
   display: flex;
   justify-content: space-between;
   align-items: center;
+  padding: 18px 30px;
+  background: #0f172a;
+  color: #fff;
+  position: relative;
+}
+
+.navbar-logo h2 {
+  margin: 0;
+  font-size: 22px;
+}
+
+/* ===== LINKS (DESKTOP) ===== */
+.navbar-links {
+  display: flex;
+  align-items: center;
+  gap: 25px;
+}
+
+.navbar-links a,
+.logout-btn {
+  text-decoration: none;
+  color: #fff;
+  background: none;
+  border: none;
+  font-size: 16px;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  transition: 0.3s ease;
+  padding: 10px;
+  border-radius: 3px;
+  margin-bottom: 0px !important;
+  width: 100%;
+}
+
+.navbar-links a:hover {
+  color: #00bcd4;
+  background-color: #1e293b;
+}
+
+.logout-btn {
+  background-color: #38bdf8;
+}
+
+/* ===== HAMBURGER ===== */
+.navbar-hamburger {
+  display: none;
+  font-size: 24px;
+  cursor: pointer;
+  z-index: 1001;
+}
+
+/* ===== MOBILE STYLE ===== */
+@media (max-width: 1300px) {
+  .navbar-hamburger {
+    display: block;
+  }
+
+  .navbar-links {
+    position: fixed;
+    top: 50px;
+    right: 50px;
+    width: 200px;
+    background: #0f172a;
+
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    padding: 20px;
+
+    /* Start hidden diagonally top-right */
+    transform: translate(120%, -120%);
+    transition: transform 0.4s ease-in-out;
+
+    box-shadow: -5px 0 20px rgba(0, 0, 0, 0.4);
+  }
+
+  .navbar-links {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+  }
+
+  /* When active */
+  .navbar-links.active {
+    transform: translate(0, 0);
+  }
 }
 
 /* Footer */
@@ -98,20 +208,290 @@ button {
   width: 100%;
 }
 
-/* Tables */
-.table {
+/* users.css */
+
+/* Users page background */
+
+/* Container */
+.container {
+  width: 90%;
+  max-width: 1200px;
+  margin: auto;
+  padding-top: 20px;
+}
+
+/* Table container */
+.table-container {
   width: 100%;
-  border-collapse: collapse;
+  overflow-x: auto;
   margin-top: 20px;
 }
 
-.table th,
-.table td {
-  padding: 12px;
-  text-align: left;
-  border-bottom: 1px solid #38bdf8;
+/* Table basic style */
+.table {
+  width: 100%;
+  border-collapse: collapse;
 }
 
-.table th {
+/* Table header */
+.table thead {
+  background-color: #0f172a;
+}
+
+.table thead th {
+  padding: 12px 15px;
+  text-align: left;
+  border-bottom: 2px solid #38bdf8;
+  font-weight: bold;
+  text-transform: uppercase;
+}
+
+/* Table body rows */
+.table tbody tr {
+  background-color: #1e293b;
+  transition: background-color 0.3s ease;
+}
+
+.table tbody tr:hover {
+  background-color: #334155;
+}
+
+/* Table body cells */
+.table tbody td {
+  padding: 10px 15px;
+  border-bottom: 1px solid #334155;
+}
+
+/* Profile picture in table */
+.profile-pic {
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+  object-fit: cover;
+}
+
+/* Optional: striped rows */
+.table tbody tr:nth-child(even) {
+  background-color: #16202b;
+}
+
+/* Spinner wrapper */
+.spinner-wrapper {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  min-height: 100vh;
+  background-color: #1e293b;
+}
+
+.spinner-wrapper p {
+  margin-top: 15px;
+  color: #fff;
+  font-size: 16px;
+}
+
+/* Spinner style */
+.spinner {
+  border: 6px solid #f3f3f3;
+  border-top: 6px solid #38bdf8;
+  border-radius: 50%;
+  width: 50px;
+  height: 50px;
+  animation: spin 1s linear infinite;
+}
+
+@keyframes spin {
+  from {
+    transform: rotate(0deg);
+  }
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+/* Responsive small screens */
+@media (max-width: 1300px) {
+  .table {
+    width: 1300px;
+  }
+}
+
+/* ------------------------- */
+/* Toastify overrides to fix centering */
+/* ------------------------- */
+
+/* Toast container (top-right) */
+.Toastify__toast-container {
+  top: 1rem !important;
+  right: 1rem !important;
+  left: auto !important;
+  bottom: auto !important;
+  transform: none !important; /* ignore parent flex centering */
+  z-index: 9999 !important;
+  text-align: left !important; /* content stays left-aligned */
+}
+
+/* Toast content stays default layout */
+.Toastify__toast {
+  text-align: left !important; /* ensure text is left */
+}
+
+/* Close button fixed to top-right of toast */
+.Toastify__close-button {
+  position: absolute !important; /* absolute inside toast */
+  top: 0.25rem !important;
+  right: 0.25rem !important;
+  opacity: 1 !important;
+  color: #1e293b !important; /* match your theme */
+  text-align: right;
+}
+
+@keyframes spin {
+  from {
+    transform: rotate(0deg);
+  }
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+/* Back button */
+.back-btn {
+  background-color: #38bdf8;
+  color: #1e293b;
+  border: none;
+  padding: 8px 16px;
+  border-radius: 6px;
+  cursor: pointer;
+  margin-bottom: 20px;
+  font-weight: bold;
+  width: 200px;
+}
+
+.back-btn:hover {
+  background-color: #0ea5e9;
+  color: #fff;
+}
+
+/* User Card */
+.user-card {
+  background-color: #1e293b;
+  color: #fff;
+  border-radius: 10px;
+  padding: 30px;
+  max-width: 500px;
+  margin: 0 auto 50px auto;
+  box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);
+  text-align: center;
+}
+
+.user-card-header {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  margin-top: 20px;
+  margin-bottom: 20px;
+}
+
+.user-avatar {
+  width: 100px;
+  height: 100px;
+  border-radius: 50%;
+  object-fit: cover;
+  margin-bottom: 10px;
+  border: 3px solid #3b82f6;
+}
+
+.user-avatar-initials {
+  width: 100px;
+  height: 100px;
+  border-radius: 50%;
+  background-color: #1e293b; /* blue background */
+  color: #3b82f6;
+  border: 3px solid #3b82f6;
+  font-size: 36px;
+  font-weight: bold;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  margin-bottom: 10px;
+  text-transform: uppercase;
+}
+
+.username {
+  color: #94a3b8;
+  margin-top: 5px;
+}
+
+.user-card-header h2 {
+  margin: 0px;
+}
+
+.user-card-body {
+  text-align: left;
+}
+
+.user-info {
+  border-bottom: 1px solid #54a3c4;
+  margin-bottom: 20px;
+  padding-bottom: 20px;
+}
+
+.user-info span {
+  display: block;
+}
+
+.user-info span:first-child {
+  font-weight: bold;
   color: #38bdf8;
+  margin-bottom: 10px;
+}
+
+/* Action Buttons */
+.user-card-actions {
+  display: flex;
+  justify-content: space-around;
+  margin-top: 25px;
+}
+
+.action-btn {
+  padding: 10px 20px;
+  border: none;
+  border-radius: 6px;
+  font-weight: bold;
+  cursor: pointer;
+  color: #fff;
+  transition: all 0.3s ease;
+}
+
+/* Specific button colors */
+.update-btn {
+  background-color: #3b82f6; /* blue */
+}
+.update-btn:hover {
+  background-color: #2563eb;
+}
+
+.delete-btn {
+  background-color: #ef4444; /* red */
+}
+.delete-btn:hover {
+  background-color: #dc2626;
+}
+
+.fund-btn {
+  background-color: #10b981; /* green */
+  margin-left: 10px;
+  margin-right: 10px;
+}
+.fund-btn:hover {
+  background-color: #059669;
+}
+
+@media screen and (max-width: 700px) {
+  /* Back button */
+  .back-btn {
+    width: 100%;
+  }
 }
