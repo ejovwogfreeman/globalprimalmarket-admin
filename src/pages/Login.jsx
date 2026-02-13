@@ -7,14 +7,52 @@ const Login = () => {
   const navigate = useNavigate();
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
+  const [loading, setLoading] = useState(false);
 
-  const handleLogin = (e) => {
+  const handleLogin = async (e) => {
     e.preventDefault();
-    if (email && password) {
-      toast.success("Login Successful!"); // ✅ call inside component
-      setTimeout(() => navigate("/dashboard"), 1000);
-    } else {
+
+    if (!email || !password) {
       toast.error("Enter email and password!");
+      return;
+    }
+
+    try {
+      setLoading(true);
+
+      const res = await fetch(
+        "https://globalprimalmarket-api.vercel.app/auth/login",
+        {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify({ email, password }),
+        },
+      );
+
+      const data = await res.json();
+
+      if (!res.ok) {
+        toast.error(data.message || "Login failed");
+        return;
+      }
+
+      // ✅ Check if admin
+      if (data.user?.isAdmin) {
+        toast.success("Admin Login Successful!");
+
+        // Optional: store token
+        localStorage.setItem("token", data.token);
+
+        setTimeout(() => navigate("/dashboard"), 1000);
+      } else {
+        toast.error("You are not an admin");
+      }
+    } catch (error) {
+      toast.error("Server error. Try again.");
+    } finally {
+      setLoading(false);
     }
   };
 
@@ -22,20 +60,23 @@ const Login = () => {
     <div className="form-container">
       <form onSubmit={handleLogin}>
         <h2>Admin Login</h2>
+
         <input
           type="email"
           placeholder="Email"
           value={email}
           onChange={(e) => setEmail(e.target.value)}
         />
+
         <input
           type="password"
           placeholder="Password"
           value={password}
           onChange={(e) => setPassword(e.target.value)}
         />
-        <button type="submit" className="btn">
-          Login
+
+        <button type="submit" className="btn" disabled={loading}>
+          {loading ? "LOADING..." : "Login"}
         </button>
       </form>
     </div>
