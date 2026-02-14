@@ -397,8 +397,8 @@ footer {
 }
 
 .proof-image {
-  width: 100px;
-  height: 100px;
+  width: 100%;
+  height: 300px;
   object-fit: cover;
   margin-bottom: 10px;
 }
