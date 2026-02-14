@@ -158,18 +158,18 @@ const Transaction = () => {
           </div>
 
           <div className="user-card-body">
-            <div className="user-info">
-              <span>Proof:</span>
-              {transaction.proof?.[0] ? (
+            {transaction.proof?.[0] ? (
+              <div className="user-info">
+                <span>Proof:</span>
                 <img
                   src={transaction.proof[0]}
                   alt={transaction._id}
                   className="proof-image"
                 />
-              ) : (
-                ""
-              )}
-            </div>
+              </div>
+            ) : (
+              ""
+            )}
 
             <div className="user-info">
               <span>Transaction ID:</span> <span>{transaction._id}</span>
