@@ -396,6 +396,13 @@ footer {
   border: 3px solid #3b82f6;
 }
 
+.proof-image {
+  width: 100px;
+  height: 100px;
+  object-fit: cover;
+  margin-bottom: 10px;
+}
+
 .user-avatar-initials {
   width: 100px;
   height: 100px;

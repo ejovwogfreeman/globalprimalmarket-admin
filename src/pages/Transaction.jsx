@@ -158,15 +158,14 @@ const Transaction = () => {
           </div>
 
           <div className="user-card-body">
-            {transaction.proof?.length > 0 && (
-              <div className="user-info">
-                <span>Proof:</span>
-                <ul>
-                  {transaction.proof.map((p, i) => (
-                    <li key={i}>{p}</li>
-                  ))}
-                </ul>
-              </div>
+            {transaction.proof?.[0] ? (
+              <img
+                src={transaction.proof[0]}
+                alt={transaction._id}
+                className="proof-image"
+              />
+            ) : (
+              ""
             )}
 
             <div className="user-info">
