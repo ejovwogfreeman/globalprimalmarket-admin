@@ -3,6 +3,7 @@ import { useParams, useNavigate } from "react-router-dom";
 import Navbar from "../components/Navbar";
 import Footer from "../components/Footer";
 import { toast } from "react-toastify";
+import { BASE_URL } from "../data";
 
 const Transaction = () => {
   const { id } = useParams();
@@ -21,14 +22,11 @@ const Transaction = () => {
 
   const fetchTransaction = async () => {
     try {
-      const res = await fetch(
-        `http://localhost:8000/api/admin/transaction/${id}`,
-        {
-          headers: {
-            Authorization: `Bearer ${localStorage.getItem("token")}`,
-          },
+      const res = await fetch(`${BASE_URL}/admin/transaction/${id}`, {
+        headers: {
+          Authorization: `Bearer ${localStorage.getItem("token")}`,
         },
-      );
+      });
 
       if (!res.ok) throw new Error(`HTTP error! status: ${res.status}`);
       const data = await res.json();
@@ -99,17 +97,14 @@ const Transaction = () => {
     if (!newStatus) return toast.error("Please select a status");
     setStatusLoading(true);
     try {
-      const res = await fetch(
-        `http://localhost:8000/api/admin/transaction/update/${id}`,
-        {
-          method: "PATCH",
-          headers: {
-            "Content-Type": "application/json",
-            Authorization: `Bearer ${localStorage.getItem("token")}`,
-          },
-          body: JSON.stringify({ status: newStatus }),
+      const res = await fetch(`${BASE_URL}/admin/transaction/update/${id}`, {
+        method: "PATCH",
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: `Bearer ${localStorage.getItem("token")}`,
         },
-      );
+        body: JSON.stringify({ status: newStatus }),
+      });
       const data = await res.json();
       if (data.success) {
         toast.success("Status changed successfully");
@@ -129,15 +124,12 @@ const Transaction = () => {
   const handleDeleteTransaction = async () => {
     setDeleteLoading(true);
     try {
-      const res = await fetch(
-        `http://localhost:8000/api/admin/transaction/delete/${id}`,
-        {
-          method: "DELETE",
-          headers: {
-            Authorization: `Bearer ${localStorage.getItem("token")}`,
-          },
+      const res = await fetch(`${BASE_URL}/admin/transaction/delete/${id}`, {
+        method: "DELETE",
+        headers: {
+          Authorization: `Bearer ${localStorage.getItem("token")}`,
         },
-      );
+      });
       const data = await res.json();
       if (data.success) {
         toast.success("Transaction deleted successfully");
@@ -185,7 +177,13 @@ const Transaction = () => {
             </div>
             <div className="user-info">
               <span>Amount:</span>{" "}
-              <span>${transaction.amount.toLocaleString()}</span>
+              <span>
+                $
+                {transaction.amount.toLocaleString("en-US", {
+                  minimumFractionDigits: 2,
+                  maximumFractionDigits: 2,
+                })}
+              </span>
             </div>
             <div className="user-info">
               <span>Type:</span>{" "}

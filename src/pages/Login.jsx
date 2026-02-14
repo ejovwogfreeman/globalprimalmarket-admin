@@ -2,6 +2,7 @@ import { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import { toast } from "react-toastify";
 import "../App.css";
+import { BASE_URL } from "../data";
 
 const Login = () => {
   const navigate = useNavigate();
@@ -29,17 +30,13 @@ const Login = () => {
     try {
       setLoading(true);
 
-      const res = await fetch(
-        // "https://globalprimalmarket-api.vercel.app/api/auth/login",
-        "http://localhost:8000/api/auth/login",
-        {
-          method: "POST",
-          headers: {
-            "Content-Type": "application/json",
-          },
-          body: JSON.stringify({ email, password }),
+      const res = await fetch(`${BASE_URL}/auth/login`, {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
         },
-      );
+        body: JSON.stringify({ email, password }),
+      });
 
       const data = await res.json();
 

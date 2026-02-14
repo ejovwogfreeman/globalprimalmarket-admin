@@ -2,6 +2,7 @@ import { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
 import Navbar from "../components/Navbar";
 import Footer from "../components/Footer";
+import { BASE_URL } from "../data";
 
 const Users = () => {
   const [users, setUsers] = useState([]);
@@ -15,7 +16,7 @@ const Users = () => {
   useEffect(() => {
     const fetchUsers = async () => {
       try {
-        const res = await fetch("http://localhost:8000/api/admin/all-users", {
+        const res = await fetch(`${BASE_URL}/admin/all-users`, {
           headers: { Authorization: `Bearer ${localStorage.getItem("token")}` },
         });
 

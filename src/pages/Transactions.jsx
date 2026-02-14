@@ -2,6 +2,7 @@ import { useEffect, useState } from "react";
 import Navbar from "../components/Navbar";
 import Footer from "../components/Footer";
 import { Link } from "react-router-dom";
+import { BASE_URL } from "../data";
 
 const Transactions = () => {
   const [transactions, setTransactions] = useState([]);
@@ -16,12 +17,9 @@ const Transactions = () => {
     const fetchTransactions = async () => {
       try {
         const token = localStorage.getItem("token");
-        const res = await fetch(
-          "http://localhost:8000/api/admin/all-transactions",
-          {
-            headers: { Authorization: `Bearer ${token}` },
-          },
-        );
+        const res = await fetch(`${BASE_URL}/admin/all-transactions`, {
+          headers: { Authorization: `Bearer ${token}` },
+        });
         if (!res.ok) throw new Error("Failed to fetch transactions");
 
         const data = await res.json();

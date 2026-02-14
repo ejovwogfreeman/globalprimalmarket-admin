@@ -3,6 +3,7 @@ import { useParams, useNavigate } from "react-router-dom";
 import Navbar from "../components/Navbar";
 import Footer from "../components/Footer";
 import { toast } from "react-toastify";
+import { BASE_URL } from "../data";
 
 const User = () => {
   const { id } = useParams();
@@ -33,7 +34,7 @@ const User = () => {
   const fetchUser = async () => {
     setLoading(true);
     try {
-      const res = await fetch(`http://localhost:8000/api/admin/user/${id}`, {
+      const res = await fetch(`${BASE_URL}/admin/user/${id}`, {
         headers: {
           Authorization: `Bearer ${localStorage.getItem("token")}`,
         },
@@ -83,17 +84,14 @@ const User = () => {
       return toast.error("Please fill all fields");
     setUpdateLoading(true);
     try {
-      const res = await fetch(
-        `http://localhost:8000/api/admin/user/update/${id}`,
-        {
-          method: "PATCH",
-          headers: {
-            "Content-Type": "application/json",
-            Authorization: `Bearer ${localStorage.getItem("token")}`,
-          },
-          body: JSON.stringify(updateData),
+      const res = await fetch(`${BASE_URL}/admin/user/update/${id}`, {
+        method: "PATCH",
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: `Bearer ${localStorage.getItem("token")}`,
         },
-      );
+        body: JSON.stringify(updateData),
+      });
 
       const data = await res.json();
       if (data.success) {
@@ -121,17 +119,14 @@ const User = () => {
       return toast.error("Please enter an amount");
     setFundLoading(true);
     try {
-      const res = await fetch(
-        `http://localhost:8000/api/admin/user/fund/${id}`,
-        {
-          method: "PATCH",
-          headers: {
-            "Content-Type": "application/json",
-            Authorization: `Bearer ${localStorage.getItem("token")}`,
-          },
-          body: JSON.stringify({ amount: Number(fundAmount) }),
+      const res = await fetch(`${BASE_URL}/admin/user/fund/${id}`, {
+        method: "PATCH",
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: `Bearer ${localStorage.getItem("token")}`,
         },
-      );
+        body: JSON.stringify({ amount: Number(fundAmount) }),
+      });
 
       const data = await res.json();
       if (data.success) {
@@ -152,15 +147,12 @@ const User = () => {
   const handleDeleteUser = async () => {
     setDeleteLoading(true);
     try {
-      const res = await fetch(
-        `http://localhost:8000/api/admin/user/delete/${id}`,
-        {
-          method: "DELETE",
-          headers: {
-            Authorization: `Bearer ${localStorage.getItem("token")}`,
-          },
+      const res = await fetch(`${BASE_URL}/admin/user/delete/${id}`, {
+        method: "DELETE",
+        headers: {
+          Authorization: `Bearer ${localStorage.getItem("token")}`,
         },
-      );
+      });
       const data = await res.json();
       if (data.success) {
         toast.success("User deleted successfully");
@@ -219,7 +211,13 @@ const User = () => {
             </div>
             <div className="user-info">
               <span>Balance:</span>{" "}
-              <span>${(user.balance || 0).toLocaleString()}</span>
+              <span>
+                $
+                {(user.balance || 0).toLocaleString("en-US", {
+                  minimumFractionDigits: 2,
+                  maximumFractionDigits: 2,
+                })}
+              </span>
             </div>
             <div className="user-info">
               <span>Date Joined:</span>{" "}
