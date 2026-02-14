@@ -161,11 +161,13 @@ const Transaction = () => {
             {transaction.proof?.[0] ? (
               <div className="user-info">
                 <span>Proof:</span>
-                <img
-                  src={transaction.proof[0]}
-                  alt={transaction._id}
-                  className="proof-image"
-                />
+                <a href={transaction.proof[0]} target="_blank">
+                  <img
+                    src={transaction.proof[0]}
+                    alt={transaction._id}
+                    className="proof-image"
+                  />
+                </a>
               </div>
             ) : (
               ""
