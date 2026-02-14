@@ -1,34 +1,54 @@
-import React, { useEffect, useState } from "react";
+import { useEffect, useState } from "react";
 import { useParams, useNavigate } from "react-router-dom";
 import Navbar from "../components/Navbar";
 import Footer from "../components/Footer";
+import { toast } from "react-toastify";
 
-const UserDetail = () => {
+const User = () => {
   const { id } = useParams();
   const navigate = useNavigate();
 
   const [user, setUser] = useState(null);
   const [loading, setLoading] = useState(true);
 
+  // Modal states
+  const [showUpdateModal, setShowUpdateModal] = useState(false);
+  const [showFundModal, setShowFundModal] = useState(false);
+  const [showDeleteModal, setShowDeleteModal] = useState(false);
+
+  // Loading states for modals
+  const [updateLoading, setUpdateLoading] = useState(false);
+  const [fundLoading, setFundLoading] = useState(false);
+  const [deleteLoading, setDeleteLoading] = useState(false);
+
+  const [updateData, setUpdateData] = useState({
+    fullName: "",
+    role: "",
+    phoneNumber: "",
+  });
+
+  const [fundAmount, setFundAmount] = useState("");
+
+  // Fetch user
+  const fetchUser = async () => {
+    setLoading(true);
+    try {
+      const res = await fetch(`http://localhost:8000/api/admin/user/${id}`, {
+        headers: {
+          Authorization: `Bearer ${localStorage.getItem("token")}`,
+        },
+      });
+      if (!res.ok) throw new Error(`HTTP error! status: ${res.status}`);
+      const data = await res.json();
+      setUser(data.user);
+    } catch (error) {
+      console.error("Error fetching user:", error);
+    } finally {
+      setLoading(false);
+    }
+  };
+
   useEffect(() => {
-    const fetchUser = async () => {
-      try {
-        const res = await fetch(`http://localhost:8000/api/admin/user/${id}`, {
-          headers: {
-            Authorization: `Bearer ${localStorage.getItem("token")}`,
-          },
-        });
-
-        if (!res.ok) throw new Error(`HTTP error! status: ${res.status}`);
-        const data = await res.json();
-        setUser(data.user);
-      } catch (error) {
-        console.error("Error fetching user:", error);
-      } finally {
-        setLoading(false);
-      }
-    };
-
     fetchUser();
   }, [id]);
 
@@ -52,10 +72,111 @@ const UserDetail = () => {
     );
   }
 
+  // ---------------- Handlers ----------------
+  const handleUpdateChange = (e) => {
+    setUpdateData({ ...updateData, [e.target.name]: e.target.value });
+  };
+
+  // ---------------- Handlers ----------------
+  const handleUpdateSubmit = async () => {
+    if (!updateData.fullName || !updateData.phoneNumber || !updateData.status)
+      return toast.error("Please fill all fields");
+    setUpdateLoading(true);
+    try {
+      const res = await fetch(
+        `http://localhost:8000/api/admin/user/update/${id}`,
+        {
+          method: "PATCH",
+          headers: {
+            "Content-Type": "application/json",
+            Authorization: `Bearer ${localStorage.getItem("token")}`,
+          },
+          body: JSON.stringify(updateData),
+        },
+      );
+
+      const data = await res.json();
+      if (data.success) {
+        toast.success("User updated successfully");
+        await fetchUser(); // Re-fetch user first
+        setShowUpdateModal(false); // Then close modal
+        // Reset updateData
+        setUpdateData({
+          fullName: "",
+          role: "",
+          phoneNumber: "",
+        });
+      } else {
+        console.error(data.message || "Update failed");
+      }
+    } catch (err) {
+      console.error(err);
+    } finally {
+      setUpdateLoading(false);
+    }
+  };
+
+  const handleFundSubmit = async () => {
+    if (!fundAmount || Number(fundAmount) <= 0)
+      return toast.error("Please enter an amount");
+    setFundLoading(true);
+    try {
+      const res = await fetch(
+        `http://localhost:8000/api/admin/user/fund/${id}`,
+        {
+          method: "PATCH",
+          headers: {
+            "Content-Type": "application/json",
+            Authorization: `Bearer ${localStorage.getItem("token")}`,
+          },
+          body: JSON.stringify({ amount: Number(fundAmount) }),
+        },
+      );
+
+      const data = await res.json();
+      if (data.success) {
+        toast.success("User funded successfully");
+        await fetchUser(); // Re-fetch user first
+        setShowFundModal(false); // Then close modal
+        setFundAmount(""); // Reset fund input
+      } else {
+        console.error(data.message || "Funding failed");
+      }
+    } catch (err) {
+      console.error(err);
+    } finally {
+      setFundLoading(false);
+    }
+  };
+
+  const handleDeleteUser = async () => {
+    setDeleteLoading(true);
+    try {
+      const res = await fetch(
+        `http://localhost:8000/api/admin/user/delete/${id}`,
+        {
+          method: "DELETE",
+          headers: {
+            Authorization: `Bearer ${localStorage.getItem("token")}`,
+          },
+        },
+      );
+      const data = await res.json();
+      if (data.success) {
+        toast.success("User deleted successfully");
+        setShowDeleteModal(false);
+        navigate("/users");
+      }
+    } catch (err) {
+      console.error(err);
+    } finally {
+      setDeleteLoading(false);
+    }
+  };
+
   return (
     <>
       <Navbar />
-
       <div className="container">
         <button className="back-btn" onClick={() => navigate(-1)}>
           ← Go Back
@@ -72,12 +193,10 @@ const UserDetail = () => {
             ) : (
               <div className="user-avatar-initials">
                 {user.fullName
-                  ? user.fullName
-                      .split(" ")
-                      .map((n) => n[0])
-                      .join("")
-                      .toUpperCase()
-                  : "U"}
+                  .split(" ")
+                  .map((n) => n[0])
+                  .join("")
+                  .toUpperCase()}
               </div>
             )}
             <h2>{user.fullName}</h2>
@@ -92,37 +211,151 @@ const UserDetail = () => {
               <span>Phone:</span> <span>{user.phoneNumber || "N/A"}</span>
             </div>
             <div className="user-info">
-              <span>Country:</span> {user.country || "N/A"}{" "}
-              <span> {user.countryFlag || ""}</span>
-            </div>
-            <div className="user-info">
               <span>Role:</span> <span>{user.role}</span>
             </div>
             <div className="user-info">
-              <span>Verified:</span>
-              <span> {user.isVerified ? "Yes" : "No"}</span>
+              <span>Verified:</span>{" "}
+              <span>{user.isVerified ? "Yes" : "No"}</span>
             </div>
             <div className="user-info">
-              <span>Balance:</span> <span>${user.balance || 0}</span>
+              <span>Balance:</span>{" "}
+              <span>${(user.balance || 0).toLocaleString()}</span>
             </div>
             <div className="user-info">
-              <span>Joined:</span>{" "}
-              <span>{new Date(user.createdAt).toLocaleDateString()}</span>
+              <span>Date Joined:</span>{" "}
+              <span>
+                {new Date(user.createdAt).toLocaleDateString("en-GB", {
+                  day: "numeric",
+                  month: "short",
+                  year: "numeric",
+                })}
+              </span>
             </div>
           </div>
 
-          {/* Action Buttons */}
           <div className="user-card-actions">
-            <button className="action-btn update-btn">UPDATE</button>
-            <button className="action-btn fund-btn">FUND</button>
-            <button className="action-btn delete-btn">DELETE</button>
+            <button
+              className="action-btn update-btn"
+              onClick={() => {
+                setUpdateData({
+                  fullName: user.fullName,
+                  role: user.role,
+                  phoneNumber: user.phoneNumber,
+                });
+                setShowUpdateModal(true);
+              }}
+            >
+              UPDATE
+            </button>
+            <button
+              className="action-btn fund-btn"
+              onClick={() => setShowFundModal(true)}
+            >
+              FUND
+            </button>
+            <button
+              className="action-btn delete-btn"
+              onClick={() => setShowDeleteModal(true)}
+            >
+              DELETE
+            </button>
           </div>
         </div>
       </div>
+
+      {/* ------------------ UPDATE MODAL ------------------ */}
+      {showUpdateModal && (
+        <div className="modal-backdrop">
+          <div className="modal">
+            <h3>Update User</h3>
+            <input
+              type="text"
+              name="fullName"
+              placeholder="Full Name"
+              value={updateData.fullName}
+              onChange={handleUpdateChange}
+            />
+            <input
+              type="text"
+              name="phoneNumber"
+              placeholder="Phone Number"
+              value={updateData.phoneNumber}
+              onChange={handleUpdateChange}
+            />
+            <select
+              name="role"
+              value={updateData.role}
+              onChange={handleUpdateChange}
+            >
+              <option value="">Select Role</option>
+              <option value="user">User</option>
+              <option value="admin">Admin</option>
+            </select>
+            <div className="modal-actions">
+              <button onClick={handleUpdateSubmit} disabled={updateLoading}>
+                {updateLoading ? "Updating..." : "Save"}
+              </button>
+              <button
+                onClick={() => setShowUpdateModal(false)}
+                disabled={updateLoading}
+              >
+                Cancel
+              </button>
+            </div>
+          </div>
+        </div>
+      )}
+
+      {/* ------------------ FUND MODAL ------------------ */}
+      {showFundModal && (
+        <div className="modal-backdrop">
+          <div className="modal">
+            <h3>Fund User</h3>
+            <input
+              type="number"
+              placeholder="Amount"
+              value={fundAmount}
+              onChange={(e) => setFundAmount(e.target.value)}
+            />
+            <div className="modal-actions">
+              <button onClick={handleFundSubmit} disabled={fundLoading}>
+                {fundLoading ? "Funding..." : "Fund"}
+              </button>
+              <button
+                onClick={() => setShowFundModal(false)}
+                disabled={fundLoading}
+              >
+                Cancel
+              </button>
+            </div>
+          </div>
+        </div>
+      )}
+
+      {/* ------------------ DELETE MODAL ------------------ */}
+      {showDeleteModal && (
+        <div className="modal-backdrop">
+          <div className="modal">
+            <h3>Are you sure?</h3>
+            <p>This action cannot be undone.</p>
+            <div className="modal-actions">
+              <button onClick={handleDeleteUser} disabled={deleteLoading}>
+                {deleteLoading ? "Deleting..." : "Yes, Delete"}
+              </button>
+              <button
+                onClick={() => setShowDeleteModal(false)}
+                disabled={deleteLoading}
+              >
+                Cancel
+              </button>
+            </div>
+          </div>
+        </div>
+      )}
 
       <Footer />
     </>
   );
 };
 
-export default UserDetail;
+export default User;

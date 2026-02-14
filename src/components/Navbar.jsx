@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import { useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import {
   FaBars,
@@ -27,9 +27,9 @@ const Navbar = () => {
 
   return (
     <nav className="navbar">
-      <div className="navbar-logo">
+      <Link to="/" className="navbar-logo">
         <img src={logo} alt="Logo" width="150px" />
-      </div>
+      </Link>
 
       <div className={`navbar-links ${menuOpen ? "active" : ""}`}>
         <Link to="/dashboard" onClick={() => setMenuOpen(false)}>

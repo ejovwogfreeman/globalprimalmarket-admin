@@ -1,3 +1,5 @@
+@import url("https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&display=swap");
+
 * {
   box-sizing: border-box;
 }
@@ -5,7 +7,7 @@
 /* General background */
 body {
   margin: 0;
-  font-family: "Arial", sans-serif;
+  font-family: "Poppins", sans-serif;
   background-color: #1e293b;
   color: #ffffff;
 }
@@ -14,7 +16,7 @@ body {
   width: 90%;
   max-width: 1200px;
   margin: auto;
-  padding-top: 30px;
+  padding-top: 100px;
 }
 
 .dashboard-grid {
@@ -110,7 +112,11 @@ button {
   padding: 18px 30px;
   background: #0f172a;
   color: #fff;
-  position: relative;
+  position: fixed;
+  top: 0px;
+  left: 0px;
+  z-index: 1000;
+  width: 100%;
 }
 
 .navbar-logo h2 {
@@ -198,26 +204,12 @@ button {
 }
 
 /* Footer */
-.footer {
+footer {
   background-color: #1e293b;
   color: #38bdf8;
   text-align: center;
   padding: 10px 0;
-  position: fixed;
-  bottom: 0;
-  width: 100%;
-}
-
-/* users.css */
-
-/* Users page background */
-
-/* Container */
-.container {
-  width: 90%;
-  max-width: 1200px;
-  margin: auto;
-  padding-top: 20px;
+  margin-top: 30px;
 }
 
 /* Table container */
@@ -493,5 +485,92 @@ button {
   /* Back button */
   .back-btn {
     width: 100%;
+  }
+}
+
+/* Modal backdrop */
+.modal-backdrop {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: rgba(0, 0, 0, 0.5); /* dark transparent overlay */
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 1000;
+}
+
+/* Modal container */
+.modal {
+  background: #0f172a;
+  padding: 20px 30px;
+  border-radius: 10px;
+  min-width: 300px;
+  max-width: 400px;
+  color: white;
+  box-shadow: 0 5px 20px rgba(0, 0, 0, 0.5);
+  animation: fadeIn 0.3s ease;
+}
+
+/* Modal heading */
+.modal h3 {
+  margin-top: 0;
+  margin-bottom: 15px;
+  text-align: center;
+  color: #38bdf8;
+}
+
+/* Modal input fields */
+.modal input,
+.modal select {
+  width: 100%;
+  padding: 8px 10px;
+  margin-bottom: 15px;
+  border-radius: 5px;
+  border: none;
+  outline: none;
+  background: #172648;
+  color: white;
+}
+
+/* Modal buttons container */
+.modal-actions {
+  display: flex;
+  justify-content: flex-end;
+  gap: 10px;
+}
+
+/* Modal buttons */
+.modal-actions button {
+  padding: 6px 15px;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+  font-weight: bold;
+  transition: 0.2s;
+}
+
+/* Different button colors */
+.modal-actions button:nth-child(1) {
+  background: #0d6efd; /* primary / blue */
+  color: white;
+}
+
+.modal-actions button:nth-child(2) {
+  background: #6c757d; /* secondary / grey */
+  color: white;
+}
+
+/* Fade-in animation */
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+    transform: translateY(-20px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
   }
 }

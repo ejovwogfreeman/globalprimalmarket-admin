@@ -7,6 +7,7 @@ import Dashboard from "./pages/Dashboard";
 import Users from "./pages/Users";
 import User from "./pages/User";
 import Transactions from "./pages/Transactions";
+import Transaction from "./pages/Transaction";
 import Deposits from "./pages/Deposits";
 import Investments from "./pages/Investments";
 import Withdrawals from "./pages/Withdrawals";
@@ -53,6 +54,14 @@ function App() {
           element={
             <CheckAuth>
               <Transactions />
+            </CheckAuth>
+          }
+        />
+        <Route
+          path="/transaction/:id"
+          element={
+            <CheckAuth>
+              <Transaction />
             </CheckAuth>
           }
         />
