@@ -94,7 +94,12 @@ const Dashboard = () => {
       <Navbar />
 
       <div className="container">
-        <h2 style={{ color: "#fff", marginBottom: "0px" }}>Admin Dashboard</h2>
+        <div className="admin-bot">
+          <h2>Admin Dashboard</h2>
+          <Link to="/create-bot" id="btn" className="btn btn-primary">
+            CREATE BOT 🤖
+          </Link>
+        </div>
         <div style={{ color: "#fff", marginBottom: "30px" }}>
           <p style={{ marginBottom: "5px" }}>
             Welcome to your Admin Dashboard 👋

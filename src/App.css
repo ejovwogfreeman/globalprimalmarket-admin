@@ -94,13 +94,17 @@ form {
 input,
 select,
 textarea,
-button {
+button,
+input[type="file"] {
   width: 100%;
   padding: 10px;
   border-radius: 5px;
   border: none;
   outline: none;
   margin-bottom: 10px;
+  background-color: #141f39;
+  border: 1px solid rgba(255, 255, 255, 0.3);
+  color: white;
 }
 
 /* Navbar container */
@@ -581,4 +585,120 @@ footer {
     opacity: 1;
     transform: translateY(0);
   }
+}
+
+.admin-bot {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-top: 20px;
+}
+
+.admin-bot h2 {
+  color: #fff;
+  margin: 0px;
+}
+
+.admin-bot #btn {
+  display: inline !important;
+  width: auto;
+  margin: 0px;
+  text-decoration: none;
+}
+
+@media screen and (max-width: 500px) {
+  .admin-bot h2 {
+    font-size: 20px;
+  }
+  .admin-bot #btn {
+    font-size: 10px;
+  }
+}
+
+.bot-form {
+  margin-top: 100px;
+}
+
+.bot-form label {
+  display: block;
+  text-align: left !important;
+  margin-bottom: 10px;
+}
+
+.bot-grid {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 20px;
+  margin-bottom: 50px;
+}
+
+.bot-card {
+  display: flex;
+  align-items: center;
+  padding: 20px;
+  border-radius: 10px;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+  gap: 15px;
+  background-color: rgba(255, 255, 255, 0.03);
+}
+
+.bot-icon-container {
+  flex: 1;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background-color: rgba(255, 255, 255, 0.05);
+  border: 2px solid #0ea5e9;
+  border-radius: 5px;
+  height: 100%;
+}
+
+.bot-icon {
+  flex-shrink: 0;
+  color: #38bdf8;
+}
+
+.bot-info {
+  flex: 2;
+}
+
+.bot-info h3 {
+  margin: 0 0 5px 0;
+  font-size: 1.2rem;
+}
+
+.bot-info p {
+  margin: 3px 0;
+  font-size: 0.9rem;
+}
+
+#bot-btn {
+  display: block;
+  text-decoration: none;
+  text-align: center;
+}
+
+@media screen and (max-width: 700px) {
+  .bot-grid {
+    grid-template-columns: repeat(1, 1fr);
+  }
+  .bot-card {
+    padding: 15px;
+  }
+}
+
+.pagination-container {
+  margin-top: 20px;
+  display: flex;
+  justify-content: space-between;
+  gap: 10px;
+}
+
+.pagination-container button {
+  background-color: rgba(255, 255, 255, 0.8) !important;
+  color: #1e293b;
+}
+
+.pagination-container button:disabled {
+  background-color: rgba(255, 255, 255, 0.3) !important;
 }

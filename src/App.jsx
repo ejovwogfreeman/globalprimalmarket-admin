@@ -1,7 +1,7 @@
 import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
 import { ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
-
+import "./App.css";
 import Login from "./pages/Login";
 import Dashboard from "./pages/Dashboard";
 import Users from "./pages/Users";
@@ -12,7 +12,9 @@ import Deposits from "./pages/Deposits";
 import Investments from "./pages/Investments";
 import Withdrawals from "./pages/Withdrawals";
 import CheckAuth from "./components/CheckAuth"; // <-- import your auth component
-import "./App.css";
+import CreateBot from "./pages/CreateBot";
+import Bots from "./pages/Bots";
+import Bot from "./pages/Bot";
 
 function App() {
   return (
@@ -86,6 +88,30 @@ function App() {
           element={
             <CheckAuth>
               <Withdrawals />
+            </CheckAuth>
+          }
+        />
+        <Route
+          path="/create-bot"
+          element={
+            <CheckAuth>
+              <CreateBot />
+            </CheckAuth>
+          }
+        />
+        <Route
+          path="/bots"
+          element={
+            <CheckAuth>
+              <Bots />
+            </CheckAuth>
+          }
+        />
+        <Route
+          path="/bot/:id"
+          element={
+            <CheckAuth>
+              <Bot />
             </CheckAuth>
           }
         />

@@ -185,13 +185,7 @@ const Users = () => {
         </div>
         {/* Pagination Controls */}
         {filteredUsers.length > usersPerPage && (
-          <div
-            style={{
-              marginTop: "20px",
-              display: "flex",
-              gap: "10px",
-            }}
-          >
+          <div className="pagination-container">
             <button
               onClick={() => goToPage(1)}
               disabled={currentPage === 1}

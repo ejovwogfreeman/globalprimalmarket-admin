@@ -210,13 +210,7 @@ const Investments = () => {
         </div>
         {/* Pagination - First/Prev/Next/Last */}
         {filteredTransactions.length > transactionsPerPage && (
-          <div
-            style={{
-              marginTop: "20px",
-              display: "flex",
-              gap: "10px",
-            }}
-          >
+          <div className="pagination-container">
             <button
               onClick={() => goToPage(1)}
               disabled={currentPage === 1}

@@ -10,6 +10,7 @@ import {
   FaMoneyBillWave,
   FaWallet,
   FaArrowDown,
+  FaRobot,
 } from "react-icons/fa";
 import logo from "../assets/logo.png";
 import { toast } from "react-toastify";
@@ -54,6 +55,10 @@ const Navbar = () => {
 
         <Link to="/withdrawals" onClick={() => setMenuOpen(false)}>
           <FaArrowDown style={{ marginRight: 3 }} /> Withdrawals
+        </Link>
+
+        <Link to="/bots" onClick={() => setMenuOpen(false)}>
+          <FaRobot style={{ marginRight: 3 }} /> Bots
         </Link>
 
         <button onClick={handleLogout} className="logout-btn">
