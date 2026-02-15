@@ -15,17 +15,19 @@ import CheckAuth from "./components/CheckAuth"; // <-- import your auth componen
 import CreateBot from "./pages/CreateBot";
 import Bots from "./pages/Bots";
 import Bot from "./pages/Bot";
+import ScrollToTop from "./components/ScrollToTop";
+import NotFound from "./pages/NotFound";
 
 function App() {
   return (
     <Router>
       {/* Global Toast Container */}
+      <ScrollToTop />
       <ToastContainer />
 
       <Routes>
         {/* Public Route */}
         <Route path="/" element={<Login />} />
-
         {/* Protected Routes */}
         <Route
           path="/dashboard"
@@ -115,6 +117,7 @@ function App() {
             </CheckAuth>
           }
         />
+        <Route path="*" element={<NotFound />} />
       </Routes>
     </Router>
   );
