@@ -7,6 +7,7 @@ import {
   FaMoneyBillWave,
   FaWallet,
   FaArrowDown,
+  FaRobot,
 } from "react-icons/fa";
 import { Link } from "react-router-dom";
 import { BASE_URL } from "../data";
@@ -16,6 +17,7 @@ console.log(BASE_URL);
 const Dashboard = () => {
   const [users, setUsers] = useState([]);
   const [transactions, setTransactions] = useState([]);
+  const [bots, setBots] = useState([]);
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
@@ -41,6 +43,13 @@ const Dashboard = () => {
         );
         const transactionsData = await transactionsRes.json();
         setTransactions(transactionsData.transactions || []);
+
+        // Fetch Bots
+        const botsRes = await fetch(`${BASE_URL}/admin/all-bots`, {
+          headers,
+        });
+        const botsData = await botsRes.json();
+        setBots(botsData.bots || []);
       } catch (err) {
         console.error("Error fetching dashboard data:", err);
       } finally {
@@ -157,6 +166,16 @@ const Dashboard = () => {
             <p>Total: {withdrawals.length}</p>
             <Link className="view-btn" to="/withdrawals">
               View Withdrawals
+            </Link>
+          </div>
+
+          {/* Botss Card */}
+          <div className="dashboard-card">
+            <FaRobot className="card-icon" />
+            <h3>Bots</h3>
+            <p>Total: {bots.length}</p>
+            <Link className="view-btn" to="/bots">
+              View Bots
             </Link>
           </div>
         </div>
