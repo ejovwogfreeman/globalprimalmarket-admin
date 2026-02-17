@@ -164,9 +164,16 @@ const Transactions = () => {
                         minimumFractionDigits: 2,
                         maximumFractionDigits: 2,
                       })}
-                      <sub style={{ marginLeft: 4 }}>
+                      <span
+                        style={{
+                          marginLeft: 6,
+                          fontSize: "0.75em",
+                          opacity: 0.7,
+                          fontWeight: 500,
+                        }}
+                      >
                         {tx.mode?.toUpperCase()}
-                      </sub>
+                      </span>
                     </td>
                     <td data-label="Type">
                       <span
