@@ -186,17 +186,17 @@ const Transaction = () => {
                   {Number(transaction.amount).toLocaleString(undefined, {
                     minimumFractionDigits: 2,
                     maximumFractionDigits: 2,
-                  })}
-                  <span
-                    style={{
-                      marginLeft: 6,
-                      fontSize: "0.75em",
-                      opacity: 0.7,
-                      fontWeight: 500,
-                    }}
-                  >
-                    {transaction.mode?.toUpperCase()}
-                  </span>
+                  })}{" "}
+                </span>
+                <span
+                  style={{
+                    marginLeft: 6,
+                    fontSize: "0.75em",
+                    opacity: 0.7,
+                    fontWeight: 500,
+                  }}
+                >
+                  {transaction.mode?.toUpperCase()}
                 </span>
               </div>
             </div>

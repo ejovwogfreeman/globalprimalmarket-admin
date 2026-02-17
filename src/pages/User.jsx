@@ -179,7 +179,7 @@ const User = () => {
   };
 
   const getVerifiedColor = (isVerified) => {
-    switch (isVerified.toLowerCase()) {
+    switch (isVerified) {
       case true:
         return "rgba(0, 123, 255, 0.3)";
       case false:
