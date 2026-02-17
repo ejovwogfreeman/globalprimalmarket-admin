@@ -28,7 +28,10 @@ const User = () => {
     phoneNumber: "",
   });
 
-  const [fundAmount, setFundAmount] = useState("");
+  const [fundData, setFundData] = useState({
+    fundAmount: "",
+    fundMode: "btc", // default value
+  });
 
   // Fetch user
   const fetchUser = async () => {
@@ -114,10 +117,58 @@ const User = () => {
     }
   };
 
+  const handleFundChange = (e) => {
+    const { name, value } = e.target;
+    setFundData((prev) => ({
+      ...prev,
+      [name]: value,
+    }));
+  };
+
+  // const handleFundSubmit = async () => {
+  //   if (!fundAmount || Number(fundAmount) <= 0)
+  //     return toast.error("Please enter an amount");
+  //   setFundLoading(true);
+  //   try {
+  //     const res = await fetch(`${BASE_URL}/admin/user/fund/${id}`, {
+  //       method: "PATCH",
+  //       headers: {
+  //         "Content-Type": "application/json",
+  //         Authorization: `Bearer ${localStorage.getItem("token")}`,
+  //       },
+  //       body: JSON.stringify({ amount: Number(fundAmount) }),
+  //     });
+
+  //     const data = await res.json();
+  //     if (data.success) {
+  //       toast.success("User funded successfully");
+  //       await fetchUser(); // Re-fetch user first
+  //       setShowFundModal(false); // Then close modal
+  //       setFundAmount(""); // Reset fund input
+  //     } else {
+  //       console.error(data.message || "Funding failed");
+  //     }
+  //   } catch (err) {
+  //     console.error(err);
+  //   } finally {
+  //     setFundLoading(false);
+  //   }
+  // };
+
   const handleFundSubmit = async () => {
-    if (!fundAmount || Number(fundAmount) <= 0)
-      return toast.error("Please enter an amount");
+    const { fundAmount, fundMode } = fundData;
+
+    // Validation
+    if (!fundAmount || Number(fundAmount) <= 0) {
+      return toast.error("Please enter a valid amount");
+    }
+
+    if (!fundMode) {
+      return toast.error("Please select a currency mode");
+    }
+
     setFundLoading(true);
+
     try {
       const res = await fetch(`${BASE_URL}/admin/user/fund/${id}`, {
         method: "PATCH",
@@ -125,20 +176,26 @@ const User = () => {
           "Content-Type": "application/json",
           Authorization: `Bearer ${localStorage.getItem("token")}`,
         },
-        body: JSON.stringify({ amount: Number(fundAmount) }),
+        body: JSON.stringify({
+          amount: Number(fundAmount),
+          mode: fundMode, // send the selected currency
+        }),
       });
 
       const data = await res.json();
+
       if (data.success) {
         toast.success("User funded successfully");
         await fetchUser(); // Re-fetch user first
         setShowFundModal(false); // Then close modal
-        setFundAmount(""); // Reset fund input
+        setFundData({ fundAmount: "", fundMode: "" }); // Reset both fields
       } else {
+        toast.error(data.message || "Funding failed");
         console.error(data.message || "Funding failed");
       }
     } catch (err) {
       console.error(err);
+      toast.error("An error occurred while funding");
     } finally {
       setFundLoading(false);
     }
@@ -254,14 +311,24 @@ const User = () => {
               </span>
             </div>
             <div className="user-info">
-              <span>Balance:</span>{" "}
-              <span>
-                $
-                {(user.balance || 0).toLocaleString("en-US", {
-                  minimumFractionDigits: 2,
-                  maximumFractionDigits: 2,
-                })}
-              </span>
+              <span style={{ fontWeight: 600 }}>Balances:</span>
+
+              <div className="balance-grid">
+                {user?.balance &&
+                  Object.entries(user.balance).map(([symbol, amount]) => (
+                    <div key={symbol} className="balance-item">
+                      <strong>
+                        {Number(amount).toLocaleString("en-US", {
+                          minimumFractionDigits: 2,
+                          maximumFractionDigits: 2,
+                        })}
+                      </strong>
+                      <span className="balance-mode">
+                        {symbol.toUpperCase()}
+                      </span>
+                    </div>
+                  ))}
+              </div>
             </div>
             <div className="user-info">
               <span>Date Joined:</span>{" "}
@@ -350,15 +417,59 @@ const User = () => {
 
       {/* ------------------ FUND MODAL ------------------ */}
       {showFundModal && (
+        // <div className="modal-backdrop">
+        //   <div className="modal">
+        //     <h3>Fund User</h3>
+        //     <input
+        //       type="number"
+        //       placeholder="Amount"
+        //       value={fundAmount}
+        //       onChange={(e) => setFundAmount(e.target.value)}
+        //     />
+        //     <div className="modal-actions">
+        //       <button onClick={handleFundSubmit} disabled={fundLoading}>
+        //         {fundLoading ? "Funding..." : "Fund"}
+        //       </button>
+        //       <button
+        //         onClick={() => setShowFundModal(false)}
+        //         disabled={fundLoading}
+        //       >
+        //         Cancel
+        //       </button>
+        //     </div>
+        //   </div>
+        // </div>
         <div className="modal-backdrop">
           <div className="modal">
             <h3>Fund User</h3>
+
+            {/* Amount Input */}
             <input
               type="number"
+              name="fundAmount"
               placeholder="Amount"
-              value={fundAmount}
-              onChange={(e) => setFundAmount(e.target.value)}
+              value={fundData.fundAmount}
+              onChange={handleFundChange}
             />
+
+            {/* Mode Dropdown */}
+            <select
+              name="fundMode"
+              value={fundData.fundMode}
+              onChange={handleFundChange}
+            >
+              <option value="" disabled>
+                Select Currency
+              </option>
+              <option value="btc">BTC</option>
+              <option value="eth">ETH</option>
+              <option value="sol">SOL</option>
+              <option value="trx">TRX</option>
+              <option value="bnb">BNB</option>
+              <option value="xrp">XRP</option>
+            </select>
+
+            {/* Actions */}
             <div className="modal-actions">
               <button onClick={handleFundSubmit} disabled={fundLoading}>
                 {fundLoading ? "Funding..." : "Fund"}
