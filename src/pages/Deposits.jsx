@@ -165,7 +165,22 @@ const Deposits = () => {
                   <tr key={tx._id}>
                     <td data-label="S/N">{indexOfFirstTx + index + 1}</td>
                     <td data-label="User Email">{tx.user.email}</td>
-                    <td data-label="Amount">${tx.amount.toLocaleString()}</td>
+                    <td data-label="Amount">
+                      {Number(tx.amount).toLocaleString(undefined, {
+                        minimumFractionDigits: 2,
+                        maximumFractionDigits: 2,
+                      })}
+                      <span
+                        style={{
+                          marginLeft: 6,
+                          fontSize: "0.75em",
+                          opacity: 0.7,
+                          fontWeight: 500,
+                        }}
+                      >
+                        {tx.mode?.toUpperCase()}
+                      </span>
+                    </td>
                     <td data-label="Type">
                       <span
                         style={{
