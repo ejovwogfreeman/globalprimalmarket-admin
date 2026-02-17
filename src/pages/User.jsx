@@ -166,6 +166,29 @@ const User = () => {
     }
   };
 
+  // ------------------ Helpers ------------------
+  const getRoleColor = (role) => {
+    switch (role.toLowerCase()) {
+      case "admin":
+        return "rgba(0, 128, 0, 0.3)";
+      case "user":
+        return "rgba(0, 123, 255, 0.3)";
+      default:
+        return "rgba(128,128,128,0.3)";
+    }
+  };
+
+  const getVerifiedColor = (isVerified) => {
+    switch (isVerified.toLowerCase()) {
+      case true:
+        return "rgba(0, 123, 255, 0.3)";
+      case false:
+        return "rgba(255, 0, 0, 0.3)";
+      default:
+        return "rgba(128,128,128,0.3)";
+    }
+  };
+
   return (
     <>
       <Navbar />
@@ -203,11 +226,32 @@ const User = () => {
               <span>Phone:</span> <span>{user.phoneNumber || "N/A"}</span>
             </div>
             <div className="user-info">
-              <span>Role:</span> <span>{user.role}</span>
+              <span>Role:</span>{" "}
+              <span
+                style={{
+                  padding: "4px 8px",
+                  borderRadius: "10px",
+                  color: "white",
+                  display: "inline",
+                  backgroundColor: getRoleColor(user.role),
+                }}
+              >
+                {user.role}
+              </span>
             </div>
             <div className="user-info">
               <span>Verified:</span>{" "}
-              <span>{user.isVerified ? "Yes" : "No"}</span>
+              <span
+                style={{
+                  padding: "4px 8px",
+                  borderRadius: "10px",
+                  color: "white",
+                  display: "inline",
+                  backgroundColor: getVerifiedColor(user.isVerified),
+                }}
+              >
+                {user.isVerified ? "Yes" : "No"}
+              </span>
             </div>
             <div className="user-info">
               <span>Balance:</span>{" "}

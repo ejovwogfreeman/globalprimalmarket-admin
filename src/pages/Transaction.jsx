@@ -181,22 +181,28 @@ const Transaction = () => {
             </div>
             <div className="user-info">
               <span>Amount:</span>{" "}
-              <span>
-                {Number(transaction.amount).toLocaleString(undefined, {
-                  minimumFractionDigits: 2,
-                  maximumFractionDigits: 2,
-                })}
-                <span
-                  style={{
-                    marginLeft: 6,
-                    fontSize: "0.75em",
-                    opacity: 0.7,
-                    fontWeight: 500,
-                  }}
-                >
-                  {transaction.mode?.toUpperCase()}
+              <div style={{ display: "flex" }}>
+                <span>
+                  {Number(transaction.amount).toLocaleString(undefined, {
+                    minimumFractionDigits: 2,
+                    maximumFractionDigits: 2,
+                  })}
+                  <span
+                    style={{
+                      marginLeft: 6,
+                      fontSize: "0.75em",
+                      opacity: 0.7,
+                      fontWeight: 500,
+                    }}
+                  >
+                    {transaction.mode?.toUpperCase()}
+                  </span>
                 </span>
-              </span>
+              </div>
+            </div>
+            <div className="user-info">
+              <span>Mode:</span>{" "}
+              <span>{transaction.mode?.toUpperCase() || "N/A"}</span>
             </div>
             <div className="user-info">
               <span>Type:</span>{" "}
@@ -226,10 +232,7 @@ const Transaction = () => {
                 {transaction.status}
               </span>
             </div>
-            <div className="user-info">
-              <span>Mode:</span>{" "}
-              <span>{transaction.mode?.toUpperCase() || "N/A"}</span>
-            </div>
+
             <div className="user-info">
               <span>Transaction Date:</span>{" "}
               <span>
