@@ -163,7 +163,8 @@ const Transactions = () => {
                       {Number(tx.amount).toLocaleString(undefined, {
                         minimumFractionDigits: 2,
                         maximumFractionDigits: 2,
-                      })}
+                      })}{" "}
+                      &nbsp;
                       {tx.mode?.toUpperCase()}
                     </td>
                     <td data-label="Type">
