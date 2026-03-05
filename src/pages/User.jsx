@@ -283,6 +283,12 @@ const User = () => {
               <span>Phone:</span> <span>{user.phoneNumber || "N/A"}</span>
             </div>
             <div className="user-info">
+              <span>Country:</span>{" "}
+              <span>
+                {user.countryFlag || "N/A"} {user.country || "N/A"}
+              </span>
+            </div>
+            <div className="user-info">
               <span>Role:</span>{" "}
               <span
                 style={{
@@ -319,8 +325,8 @@ const User = () => {
                     <div key={symbol} className="balance-item">
                       <strong>
                         {Number(amount).toLocaleString("en-US", {
-                          minimumFractionDigits: 2,
-                          maximumFractionDigits: 2,
+                          minimumFractionDigits: 5,
+                          maximumFractionDigits: 5,
                         })}
                       </strong>
                       <span className="balance-mode">

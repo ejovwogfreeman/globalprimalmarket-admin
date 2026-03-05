@@ -190,8 +190,8 @@ const Bot = () => {
               <span>
                 $
                 {bot.price.toLocaleString("en-US", {
-                  minimumFractionDigits: 2,
-                  maximumFractionDigits: 2,
+                  minimumFractionDigits: 5,
+                  maximumFractionDigits: 5,
                 })}
               </span>
             </div>

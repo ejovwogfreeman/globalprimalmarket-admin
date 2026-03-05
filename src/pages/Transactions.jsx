@@ -161,8 +161,8 @@ const Transactions = () => {
                     <td data-label="User Email">{tx.user.email}</td>
                     <td data-label="Amount">
                       {Number(tx.amount).toLocaleString(undefined, {
-                        minimumFractionDigits: 2,
-                        maximumFractionDigits: 2,
+                        minimumFractionDigits: 5,
+                        maximumFractionDigits: 5,
                       })}
                       <span
                         style={{

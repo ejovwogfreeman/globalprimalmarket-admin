@@ -184,8 +184,8 @@ const Transaction = () => {
               <div style={{ display: "flex", alignItems: "baseline" }}>
                 <span style={{ margin: "0px" }}>
                   {Number(transaction.amount).toLocaleString(undefined, {
-                    minimumFractionDigits: 2,
-                    maximumFractionDigits: 2,
+                    minimumFractionDigits: 5,
+                    maximumFractionDigits: 5,
                   })}{" "}
                 </span>
                 <span
