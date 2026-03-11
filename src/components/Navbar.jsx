@@ -61,7 +61,11 @@ const Navbar = () => {
           <FaRobot style={{ marginRight: 3 }} /> Bots
         </Link>
 
-        <button onClick={handleLogout} className="logout-btn">
+        <button
+          onClick={handleLogout}
+          className="logout-btn"
+          style={{ color: "#0F172A" }}
+        >
           <FaSignOutAlt style={{ marginRight: 3 }} /> Logout
         </button>
       </div>
