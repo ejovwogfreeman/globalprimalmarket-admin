@@ -3,7 +3,7 @@ import { useParams, useNavigate } from "react-router-dom";
 import Navbar from "../components/Navbar";
 import Footer from "../components/Footer";
 import { toast } from "react-toastify";
-import { BASE_URL } from "../data";
+import { BASE_URL, CRYPTO_MODES } from "../data";
 
 const User = () => {
   const { id } = useParams();
@@ -316,7 +316,8 @@ const User = () => {
                 {user.isVerified ? "Yes" : "No"}
               </span>
             </div>
-            <div className="user-info">
+
+            {/* <div className="user-info">
               <span style={{ fontWeight: 600 }}>Balances:</span>
 
               <div className="balance-grid">
@@ -335,7 +336,106 @@ const User = () => {
                     </div>
                   ))}
               </div>
+            </div> */}
+
+            <div className="user-info">
+              <span style={{ fontWeight: 600 }}>Balances:</span>
+
+              {user?.balance &&
+                (() => {
+                  const balances = user.balance;
+
+                  // ✅ Total USDT calculation
+                  const totalUSDT = Object.entries(balances).reduce(
+                    (sum, [symbol, amount]) => {
+                      const crypto = CRYPTO_MODES.find(
+                        (c) => c.symbol === symbol,
+                      );
+
+                      const value = Number(amount) || 0;
+
+                      if (symbol === "usdt") return sum + value;
+                      if (!crypto) return sum;
+
+                      return sum + value * crypto.rate;
+                    },
+                    0,
+                  );
+
+                  return (
+                    <>
+                      {/* ✅ TOTAL (ABOVE GRID) */}
+                      <div className="balance-item total">
+                        <span
+                          className="balance-mode"
+                          style={{ marginLeft: "0px", marginBottom: "5px" }}
+                        >
+                          TOTAL BALANCE
+                        </span>
+                        <div
+                          style={{ display: "flex", alignItems: "baseline" }}
+                        >
+                          <strong>
+                            {totalUSDT.toLocaleString("en-US", {
+                              minimumFractionDigits: 2,
+                              maximumFractionDigits: 2,
+                            })}
+                          </strong>
+                          <span className="balance-mode">USDT</span>
+                        </div>
+                      </div>
+
+                      {/* ✅ GRID (ONLY COINS) */}
+                      <div className="balance-grid">
+                        {Object.entries(balances).map(([symbol, amount]) => {
+                          const crypto = CRYPTO_MODES.find(
+                            (c) => c.symbol === symbol,
+                          );
+
+                          const value = Number(amount) || 0;
+
+                          const usdtValue =
+                            symbol === "usdt"
+                              ? value
+                              : crypto
+                                ? value * crypto.rate
+                                : 0;
+
+                          return (
+                            <div key={symbol} className="balance-item">
+                              <div
+                                style={{
+                                  display: "flex",
+                                  alignItems: "baseline",
+                                }}
+                              >
+                                <strong>
+                                  {value.toLocaleString("en-US", {
+                                    minimumFractionDigits: 5,
+                                    maximumFractionDigits: 5,
+                                  })}
+                                </strong>
+                                <span className="balance-mode">
+                                  {symbol.toUpperCase()}{" "}
+                                </span>
+                              </div>
+                              <small style={{ color: "#757C86" }}>
+                                ≈
+                                {usdtValue.toLocaleString("en-US", {
+                                  minimumFractionDigits: 2,
+                                  maximumFractionDigits: 2,
+                                })}{" "}
+                                USDT
+                              </small>
+                            </div>
+                          );
+                        })}
+                      </div>
+                    </>
+                  );
+                })()}
             </div>
+
             <div className="user-info">
               <span>Date Joined:</span>{" "}
               <span>
