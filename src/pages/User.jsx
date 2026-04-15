@@ -399,7 +399,7 @@ const User = () => {
                                 </span>
                               </div>
                               <small style={{ color: "#757C86" }}>
-                                ≈
+                                ≈{" "}
                                 {usdtValue.toLocaleString("en-US", {
                                   minimumFractionDigits: 2,
                                   maximumFractionDigits: 2,
